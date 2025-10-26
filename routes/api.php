@@ -10,3 +10,4 @@ Route::apiResource('students', StudentController::class);
 Route::apiResource('tasks', TaskController::class);
 Route::apiResource('task-submissions', TaskSubmissionController::class);
 Route::get('task-submission', [TaskSubmissionController::class, 'studentWise']);
+Route::get('/task-submission/{student_id}', [TaskSubmissionController::class, 'getByStudent']);

@@ -101,4 +101,39 @@ class TaskSubmissionController extends Controller
             'data' => $sorted
         ]);
     }
+
+    public function getByStudent($student_id)
+    {
+        $student = \App\Models\Student::find($student_id);
+
+        if (!$student) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Student not found.'
+            ], 404);
+        }
+
+        $submissions = \App\Models\TaskSubmission::with('task')
+            ->where('student_id', $student_id)
+            ->get()
+            ->map(function ($submission) {
+                return [
+                    'id' => $submission->id,
+                    'title' => $submission->task->title ?? 'No Title',
+                    'details' => $submission->task->details ?? 'No Details',
+                    'marks' => $submission->marks,
+                    'created_at' => $submission->created_at->toDateTimeString(),
+                ];
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'user' => [
+                'id' => $student->id,
+                'name' => $student->name,
+                'phone' => $student->phone,
+            ],
+            'data' => $submissions
+        ]);
+    }
 }
