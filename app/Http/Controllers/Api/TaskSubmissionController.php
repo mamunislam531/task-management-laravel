@@ -71,4 +71,34 @@ class TaskSubmissionController extends Controller
             'data' => null
         ], 204);
     }
+
+    public function studentWise()
+    {
+        // Get all students with their submissions
+        $students = \App\Models\Student::with('submissions')->get();
+
+        $summary = $students->map(function ($student) {
+            return [
+                'id' => $student->id,
+                'student-name' => $student->name,
+                'phone' => $student->phone,
+                'total-submit' => $student->submissions->count(),
+                'total-marks' => $student->submissions->sum('marks'),
+            ];
+        });
+
+        // Sort descending by total-marks
+        $sorted = $summary->sortByDesc('total-marks')->values();
+
+        // Add rank
+        $sorted->transform(function ($item, $index) {
+            $item['rank'] = $index + 1;
+            return $item;
+        });
+
+        return response()->json([
+            'status' => 'Success',
+            'data' => $sorted
+        ]);
+    }
 }

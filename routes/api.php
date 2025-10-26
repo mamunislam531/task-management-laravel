@@ -9,3 +9,4 @@ use App\Http\Controllers\Api\TaskSubmissionController;
 Route::apiResource('students', StudentController::class);
 Route::apiResource('tasks', TaskController::class);
 Route::apiResource('task-submissions', TaskSubmissionController::class);
+Route::get('task-submission', [TaskSubmissionController::class, 'studentWise']);
