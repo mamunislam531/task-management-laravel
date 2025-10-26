@@ -1,0 +1,11 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\TaskSubmissionController;
+
+Route::apiResource('students', StudentController::class);
+Route::apiResource('tasks', TaskController::class);
+Route::apiResource('task-submissions', TaskSubmissionController::class);
